@@ -67,7 +67,7 @@ vet_hitters_df = hitters_df[hitters_df['Years Played'] >= 5].copy()
 
 
 ### compare
-# comparison stats selected to highlight key performance metrics, normalizing for playing time and career stage, to fairly compare rookie and veteran performance.
+# comparison stats selected to highlight key performance metrics, normalizing for playing time, to fairly compare rookie and veteran performance.
 
 hitting_comparison_columns = [
     'H',   # Hits
