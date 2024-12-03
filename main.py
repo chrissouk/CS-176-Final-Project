@@ -93,14 +93,14 @@ pitching_comparison_columns = [
 ]
 
 # Normalize hitting stats per plate appearance
-def normalize_batter_stats(df, hitting_columns):
-    for col in hitting_columns:
+def normalize_batter_stats(df):
+    for col in hitting_comparison_columns:
         if col not in ['OBP', 'SLG', 'OPS']:
             df[col + '_per_PA'] = df[col] / df['PA']
     return df
 
-rookie_hitters_df = normalize_batter_stats(rookie_hitters_df, hitting_comparison_columns)
-vet_hitters_df = normalize_batter_stats(vet_hitters_df, hitting_comparison_columns)
+rookie_hitters_df = normalize_batter_stats(rookie_hitters_df)
+vet_hitters_df = normalize_batter_stats(vet_hitters_df)
 
 
 ### visualize
