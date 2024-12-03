@@ -98,48 +98,91 @@ vet_hitters_average_stats = vet_hitters_df[hitting_comparison_columns].mean()
 rookie_pitchers_average_stats = rookie_pitchers_df[pitching_comparison_columns].mean()
 vet_pitchers_average_stats = vet_pitchers_df[pitching_comparison_columns].mean()
 
-print(rookie_hitters_average_stats)
-print(vet_hitters_average_stats)
+# print(rookie_hitters_average_stats)
+# print(vet_hitters_average_stats)
 # print(rookie_pitchers_average_stats)
 # print(vet_pitchers_average_stats)
 
 
 ### visualize:
 
-def save_hitting_comparison(rookie_stats, vet_stats, columns, title, filename):
-    x = np.arange(len(columns))
-    width = 0.35
 
-    fig, ax = plt.subplots(figsize=(15, 6))
-    ax.bar(x - width/2, rookie_stats, width, label='Rookies', color='skyblue')
-    ax.bar(x + width/2, vet_stats, width, label='Veterans', color='orange')
-
-    ax.set_xlabel('Hitting Stats')
-    ax.set_ylabel('Average')
-    ax.set_title(title)
-    ax.set_xticks(x)
-    ax.set_xticklabels(columns, rotation=45, ha='right')
-    ax.legend()
-
+def save_hitting_comparison(df_rookies, df_vets, columns, title, filename):
+    fig, ax = plt.subplots(figsize=(20, 10))
+    
+    plot_data = []
+    labels = []
+    for col in columns:
+        rookie_col = pd.to_numeric(df_rookies[col], errors='coerce').dropna()
+        vet_col = pd.to_numeric(df_vets[col], errors='coerce').dropna()
+        
+        plot_data.append(rookie_col)
+        plot_data.append(vet_col)
+        
+        labels.append(f'{col} (R)')
+        labels.append(f'{col} (V)')
+    
+    bp = ax.boxplot(plot_data, 
+                    patch_artist=True,
+                    labels=labels,
+                    showfliers=False)
+    
+    colors = ['skyblue', 'orange'] * len(columns)
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+    
+    legend_elements = [
+        plt.Rectangle((0,0), 1, 1, color='skyblue', label='Rookies'),
+        plt.Rectangle((0,0), 1, 1, color='orange', label='Veterans')
+    ]
+    ax.legend(handles=legend_elements, loc='upper right')
+    
+    ax.set_title(title, fontsize=16)
+    ax.set_xlabel('Hitting Stats', fontsize=12)
+    ax.set_ylabel('Value', fontsize=12)
+    
+    plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
+    
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()
 
-def save_pitching_comparison(rookie_stats, vet_stats, columns, title, filename):
-    x = np.arange(len(columns))
-    width = 0.35
-
-    fig, ax = plt.subplots(figsize=(15, 6))
-    ax.bar(x - width/2, rookie_stats, width, label='Rookies', color='lightgreen')
-    ax.bar(x + width/2, vet_stats, width, label='Veterans', color='purple')
-
-    ax.set_xlabel('Pitching Stats')
-    ax.set_ylabel('Average')
-    ax.set_title(title)
-    ax.set_xticks(x)
-    ax.set_xticklabels(columns, rotation=45, ha='right')
-    ax.legend()
-
+def save_pitching_comparison(df_rookies, df_vets, columns, title, filename):
+    fig, ax = plt.subplots(figsize=(20, 10))
+    
+    plot_data = []
+    labels = []
+    for col in columns:
+        rookie_col = pd.to_numeric(df_rookies[col], errors='coerce').dropna()
+        vet_col = pd.to_numeric(df_vets[col], errors='coerce').dropna()
+        
+        plot_data.append(rookie_col)
+        plot_data.append(vet_col)
+        
+        labels.append(f'{col} (R)')
+        labels.append(f'{col} (V)')
+    
+    bp = ax.boxplot(plot_data, 
+                    patch_artist=True,
+                    labels=labels,
+                    showfliers=False)
+    
+    colors = ['lightgreen', 'purple'] * len(columns)
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+    
+    legend_elements = [
+        plt.Rectangle((0,0), 1, 1, color='lightgreen', label='Rookies'),
+        plt.Rectangle((0,0), 1, 1, color='purple', label='Veterans')
+    ]
+    ax.legend(handles=legend_elements, loc='upper right')
+    
+    ax.set_title(title, fontsize=16)
+    ax.set_xlabel('Pitching Stats', fontsize=12)
+    ax.set_ylabel('Value', fontsize=12)
+    
+    plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
+    
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()
@@ -161,23 +204,23 @@ rookie_hitters_normalized_stats = rookie_hitters_df[[col + '_per_PA' if col not 
 vet_hitters_normalized_stats = vet_hitters_df[[col + '_per_PA' if col not in ['OBP', 'SLG', 'OPS'] else col for col in hitting_comparison_columns]
 ].mean()
 
-print(rookie_hitters_normalized_stats)
-print(vet_hitters_normalized_stats)
+# print(rookie_hitters_normalized_stats)
+# print(vet_hitters_normalized_stats)
 # print(rookie_pitchers_average_stats)
 # print(vet_pitchers_average_stats)
 
 # Visualize comparison with normalized stats
 save_hitting_comparison(
-    rookie_hitters_normalized_stats.values,
-    vet_hitters_normalized_stats.values,
+    rookie_hitters_df,
+    vet_hitters_df,
     [col + '_per_PA' if col not in ['OBP', 'SLG', 'OPS'] else col for col in hitting_comparison_columns],
     'Rookie vs Veteran Hitters: Normalized by Plate Appearance',
     'hitting_comparison_normalized.png'
 )
 
 save_pitching_comparison(
-    rookie_pitchers_average_stats.values,
-    vet_pitchers_average_stats.values,
+    rookie_pitchers_df,
+    vet_pitchers_df,
     pitching_comparison_columns,
     'Rookie vs Veteran Pitchers',
     'pitching_comparison_normalized.png'
