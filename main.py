@@ -53,7 +53,7 @@ pitchers_df.dropna(subset=['ERA'], inplace=True)
 rookie_pitchers_df = pitchers_df[(pitchers_df['Total IP'] <= 50)].copy()
 
 # no more than 150 at bats for hitters
-rookie_hitters_df = hitters_df[(hitters_df['Total AB'] <= 130)].copy()
+rookie_hitters_df = hitters_df[(hitters_df['Total AB'] <= 150)].copy()
 
 
 ## vet criteria via baseball-almanac.com
