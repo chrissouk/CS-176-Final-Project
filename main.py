@@ -92,20 +92,18 @@ pitching_comparison_columns = [
     'SO/W', # Strikeout-to-Walk Ratio
 ]
 
-rookie_hitters_average_stats = rookie_hitters_df[hitting_comparison_columns].mean()
-vet_hitters_average_stats = vet_hitters_df[hitting_comparison_columns].mean()
+# Normalize hitting stats per plate appearance
+def normalize_batter_stats(df, hitting_columns):
+    for col in hitting_columns:
+        if col not in ['OBP', 'SLG', 'OPS']:
+            df[col + '_per_PA'] = df[col] / df['PA']
+    return df
 
-rookie_pitchers_average_stats = rookie_pitchers_df[pitching_comparison_columns].mean()
-vet_pitchers_average_stats = vet_pitchers_df[pitching_comparison_columns].mean()
-
-# print(rookie_hitters_average_stats)
-# print(vet_hitters_average_stats)
-# print(rookie_pitchers_average_stats)
-# print(vet_pitchers_average_stats)
+rookie_hitters_df = normalize_batter_stats(rookie_hitters_df, hitting_comparison_columns)
+vet_hitters_df = normalize_batter_stats(vet_hitters_df, hitting_comparison_columns)
 
 
-### visualize:
-
+### visualize
 
 def save_hitting_comparison(df_rookies, df_vets, columns, title, filename):
     fig, ax = plt.subplots(figsize=(20, 10))
@@ -186,28 +184,6 @@ def save_pitching_comparison(df_rookies, df_vets, columns, title, filename):
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()
-
-# Normalize hitting stats per plate appearance
-def normalize_batter_stats(df, hitting_columns):
-    for col in hitting_columns:
-        if col not in ['OBP', 'SLG', 'OPS']:
-            df[col + '_per_PA'] = df[col] / df['PA']
-    return df
-
-# Apply normalization
-rookie_hitters_df = normalize_batter_stats(rookie_hitters_df, hitting_comparison_columns)
-vet_hitters_df = normalize_batter_stats(vet_hitters_df, hitting_comparison_columns)
-
-# Recalculate average stats for normalized columns
-rookie_hitters_normalized_stats = rookie_hitters_df[[col + '_per_PA' if col not in ['OBP', 'SLG', 'OPS'] else col for col in hitting_comparison_columns]
-].mean()
-vet_hitters_normalized_stats = vet_hitters_df[[col + '_per_PA' if col not in ['OBP', 'SLG', 'OPS'] else col for col in hitting_comparison_columns]
-].mean()
-
-# print(rookie_hitters_normalized_stats)
-# print(vet_hitters_normalized_stats)
-# print(rookie_pitchers_average_stats)
-# print(vet_pitchers_average_stats)
 
 # Visualize comparison with normalized stats
 save_hitting_comparison(
