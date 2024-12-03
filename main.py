@@ -185,7 +185,6 @@ def save_pitching_comparison(df_rookies, df_vets, columns, title, filename):
     plt.savefig(filename)
     plt.close()
 
-# Visualize comparison with normalized stats
 save_hitting_comparison(
     rookie_hitters_df,
     vet_hitters_df,
