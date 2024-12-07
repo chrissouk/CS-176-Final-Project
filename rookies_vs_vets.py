@@ -1,5 +1,3 @@
-#### rookies_vs_vets.py
-
 import kagglehub
 import pandas as pd
 import numpy as np
