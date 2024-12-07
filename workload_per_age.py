@@ -57,5 +57,5 @@ plt.ylabel('Average Games Played', fontsize=12)
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.tight_layout()
 
-plt.savefig('workload_per_age.png', dpi=300)
+plt.savefig('Visualizations/workload_per_age.png', dpi=300)
 plt.close()

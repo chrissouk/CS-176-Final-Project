@@ -145,7 +145,7 @@ save_boxplot_comparison(
     vet_hitters_df,
     [col + '_per_PA' if col not in ['OBP', 'SLG', 'OPS'] else col for col in hitting_comparison_columns],
     'Rookie vs. Veteran Hitters: Normalized by Plate Appearance',
-    'rookie_vs_veteran_hitters.png',
+    'Visualizations/rookie_vs_veteran_hitters.png',
     ['lightblue', 'blue']
 )
 
@@ -154,6 +154,6 @@ save_boxplot_comparison(
     vet_pitchers_df,
     pitching_comparison_columns,
     'Rookie vs. Veteran Pitchers',
-    'rookie_vs_veteran_pitchers.png',
+    'Visualizations/rookie_vs_veteran_pitchers.png',
     ['pink', 'red']
 )
